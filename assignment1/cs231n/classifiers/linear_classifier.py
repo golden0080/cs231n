@@ -1,26 +1,24 @@
 from __future__ import print_function
 
 import numpy as np
+from past.builtins import xrange
 
 from cs231n.classifiers.linear_svm import *
 from cs231n.classifiers.softmax import *
-from past.builtins import xrange
 
 
 class LinearClassifier(object):
     def __init__(self):
         self.W = None
 
-    def train(
-        self,
-        X,
-        y,
-        learning_rate=1e-3,
-        reg=1e-5,
-        num_iters=100,
-        batch_size=200,
-        verbose=False
-    ):
+    def train(self,
+              X,
+              y,
+              learning_rate=1e-3,
+              reg=1e-5,
+              num_iters=100,
+              batch_size=200,
+              verbose=False):
         """
     Train this linear classifier using stochastic gradient descent.
 
@@ -109,7 +107,6 @@ class LinearClassifier(object):
         ###########################################################################
         S = X.dot(self.W)
         y_pred = np.argmax(S, axis=1)
-        print(y_pred.shape)
         ###########################################################################
         #                           END OF YOUR CODE                              #
         ###########################################################################
