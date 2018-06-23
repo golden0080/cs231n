@@ -1,5 +1,6 @@
 import numpy as np
 
+
 """
 This file implements various first-order update rules that are commonly used
 for training neural networks. Each update rule accepts current weights and the
@@ -65,14 +66,14 @@ def sgd_momentum(w, dw, config=None):
     # TODO: Implement the momentum update formula. Store the updated value in #
     # the next_w variable. You should also use and update the velocity v.     #
     ###########################################################################
-    pass
+    v = config['momentum'] * v - config['learning_rate'] * dw
+    next_w = w + v
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
     config['velocity'] = v
 
     return next_w, config
-
 
 
 def rmsprop(w, dw, config=None):
@@ -99,7 +100,12 @@ def rmsprop(w, dw, config=None):
     # in the next_w variable. Don't forget to update cache value stored in    #
     # config['cache'].                                                        #
     ###########################################################################
-    pass
+    decay = config['decay_rate']
+    cache = config['cache']
+    cache = decay * cache + (1 - decay) * dw**2
+    config['cache'] = cache
+    next_w = w - config['learning_rate'
+                        ] * dw / (np.sqrt(cache) + config['epsilon'])
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
@@ -139,7 +145,26 @@ def adam(w, dw, config=None):
     # NOTE: In order to match the reference output, please modify t _before_  #
     # using it in any calculations.                                           #
     ###########################################################################
-    pass
+    t = config['t']
+    t += 1
+    config['t'] = t
+
+    m = config['m']
+    beta1 = config['beta1']
+    m = beta1 * m + (1 - beta1) * dw
+    config['m'] = m
+
+    v = config['v']
+    beta2 = config['beta2']
+    v = beta2 * v + (1 - beta2) * dw**2
+    config['v'] = v
+
+    m_corrected = m / (1 - beta1**t)
+    v_corrected = v / (1 - beta2**t)
+
+    next_w = w - config['learning_rate'] * m_corrected / (
+        np.sqrt(v_corrected) + config['epsilon']
+    )
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
